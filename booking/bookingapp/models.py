@@ -4,7 +4,7 @@ from django.db import models
 
 class Registration(models.Model):
     name = models.CharField(max_length= 20)
-    mobile = models.CharField(max_length= 10)
+    mobile = models.CharField(max_length= 10, unique=True)
     address = models.CharField(max_length=50)
     otp = models.CharField(max_length=10)
     time = models.DateTimeField()

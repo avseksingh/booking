@@ -18,7 +18,8 @@ def reg(request):
         # dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
         data = Registration(name=user, mobile=mobile, address=address, otp=otp, time=now)
         data.save()
-        return render(request, 'verifyuser.html', {"otp": otp, "user": user})
+        rawdata = Registration.objects.filter(mobile = mobile)
+        return render(request, 'verify.html', {"otp": otp, "user": user, 'mobile': mobile, "rawdata": rawdata})
         # if request.GET:
         #     # userotp = request.GET['userotp']
         #     userotp = otp
@@ -31,6 +32,20 @@ def reg(request):
                 
         # return render(request, 'verifyuser.html', {"otp": otp, "user": user})
     return render(request, "registration.html")
+
+def verify(request):
+    rawdata = Registration.objects.all()
+    if request.GET:
+        # userotp=request.GET['userotpv']
+
+        otp = request.GET['otp']
+        userotp = otp
+        if userotp == otp:
+            return HttpResponse("OTP Verified Successfully")
+        else:
+            return HttpResponse("Invalid OTP")
+        
+    return render(request, 'verifyuser.html', {'rawdata': rawdata})
 
 def rand(request):
     rnumber = ut.getOtp()
